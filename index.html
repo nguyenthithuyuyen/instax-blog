@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instax Diary</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", sans-serif;
+      background: #f6f3ee;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 10px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 12px 12px 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      transform: rotate(-2deg);
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    .card:nth-child(even) {
+      transform: rotate(2deg);
+    }
+
+    .card:hover {
+      transform: scale(1.03) rotate(0deg);
+    }
+
+    .card img {
+      width: 100%;
+    }
+
+    .caption {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 8px;
+      color: #666;
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .modal img {
+      max-width: 80%;
+      max-height: 65%;
+      background: white;
+      padding: 15px 15px 40px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      transform: rotate(-1deg);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .modal p {
+      color: white;
+      margin-top: 15px;
+      font-size: 14px;
+      max-width: 80%;
+      text-align: center;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .prev { left: 20px; }
+    .next { right: 20px; }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Instax Diary</h1>
+  <p style="font-size:14px;color:#888;margin-top:8px;">✨^.^ ...một chút... lộn xộn... ^.^ ✨</p>
+</header>
+
+<section class="gallery">
+
+  <!-- Album 1 -->
+  <div class="card" onclick="openModal(
+    [
+      'img1/1.jpeg',
+      'img1/2.jpeg'],
+    [
+      'đứng lại một chút ☘️',
+      'mọi thứ cũng dịu lại hơn một chút ✨'
+    ])">
+    <img src="img1/1.jpeg" />
+    <div class="caption">Xinh xắn ven đường 🌸✨</div>
+  </div>
+
+  <!-- Album 2 -->
+  <div class="card" onclick="openModal(
+    ['img2/1.jpeg'],
+    ['giữ lại một chút ánh chiều 🌤️']
+  )">
+    <img src="img2/1.jpeg" />
+    <div class="caption">Giữ lại chút nắng chiều ☀️🎞️</div>
+  </div>
+
+  <!-- Album 3 -->
+  <div class="card" onclick="openModal(
+    ['img3/1.jpeg'],
+    ['một nơi không ai vội 🌿']
+  )">
+    <img src="img3/1.jpeg" />
+    <div class="caption">Góc nhỏ bình yên 📚☕</div>
+  </div>
+
+    <!-- Album 4 -->
+  <div class="card" onclick="openModal(
+    ['img4/1.jpeg'],
+    ['một nơi không ai vội 🌿']
+  )">
+    <img src="img4/1.jpeg" />
+    <div class="caption">Một đại dương thu nhỏ 🌊🐠</div>
+  </div>
+    
+  <!-- Album 5 -->
+  <div class="card" onclick="openModal(
+    ['img5/1.jpeg'],
+    ['một nơi không ai vội 🌿']
+  )">
+    <img src="img5/1.jpeg" />
+    <div class="caption">Đón lấy mặt trời 🌻💛</div>
+  </div>
+
+    <!-- Album 6 -->
+  <div class="card" onclick="openModal(
+    ['img6/1.jpeg'],
+    ['một nơi không ai vội 🌿']
+  )">
+    <img src="img6/1.jpeg" />
+    <div class="caption">Một chút mùa thu cũ 🍂🕰️</div>
+  </div>
+
+      <!-- Album 7 -->
+  <div class="card" onclick="openModal(
+    ['img7/1.jpeg'],
+    ['một nơi không ai vội 🌿']
+  )">
+    <img src="img7/1.jpeg" />
+    <div class="caption">Chậm lại một nhịp 👟🌿</div>
+  </div>
+
+      <!-- Album 8 -->
+  <div class="card" onclick="openModal(
+    ['img8/1.jpeg'],
+    ['một nơi không ai vội 🌿']
+  )">
+    <img src="img8/1.jpeg" />
+    <div class="caption">Lặng lẽ một góc riêng 🎞️🏠</div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <span class="close" onclick="closeModal()">&times;</span>
+  <span class="nav prev" onclick="prevImage()">❮</span>
+  <img id="modal-img" src="" />
+  <span class="nav next" onclick="nextImage()">❯</span>
+  <p id="modal-caption"></p>
+</div>
+
+<script>
+  let currentImages = [];
+  let currentCaptions = [];
+  let currentIndex = 0;
+
+  function openModal(images, captions) {
+    currentImages = images;
+    currentCaptions = captions;
+    currentIndex = 0;
+    document.getElementById('modal').style.display = 'flex';
+    showImage();
+  }
+
+  function showImage() {
+    document.getElementById('modal-img').src = currentImages[currentIndex];
+    document.getElementById('modal-caption').innerText = currentCaptions[currentIndex] || '';
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % currentImages.length;
+    showImage();
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length;
+    showImage();
+  }
+
+  function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  // SWIPE SUPPORT
+  let startX = 0;
+
+  const modalImg = document.getElementById('modal-img');
+
+  modalImg.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  modalImg.addEventListener('touchend', (e) => {
+    let endX = e.changedTouches[0].clientX;
+    let diff = startX - endX;
+
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) {
+        nextImage();
+      } else {
+        prevImage();
+      }
+    }
+  });
+</script>
+
+<footer style="text-align:center; padding:30px; font-size:12px; color:#999;">
+  © 2026 - Instax Diary
+</footer>
+
+</body>
+</html>
